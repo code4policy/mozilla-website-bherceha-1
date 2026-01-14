@@ -38,3 +38,12 @@ li {
   line-height: 1;
   letter-spacing: 1px;
 }
+
+#mainquote {
+  color: red;
+  font-weight: bold
+}
+
+.quote {
+  color: red
+}
