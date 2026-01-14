@@ -1,0 +1,40 @@
+# Just check for 5 commits on main :(
+name: Mozilla Website Autograder
+on:
+  - push
+  - workflow_dispatch
+  - repository_dispatch
+permissions:
+  contents: read
+  actions: read
+  checks: write
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Check commits
+      id: check-commits
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Check commits
+        command: |
+            REPO="${{ github.repository }}"
+            REPO="${REPO##*/}"
+            STUDENT="${REPO##*-}"
+            COUNT=$(git log main --author="$STUDENT" --pretty=oneline | wc -l | tr -d ' ')
+            echo "Student: $STUDENT"
+            echo "Commit count on main: $COUNT"
+            [ "$COUNT" -ge 5 ]
+        timeout: 2
+        max-score: 10
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        CHECK-COMMITS_RESULTS: "${{steps.check-commits.outputs.result}}"
+      with:
+        runners: check-commits
