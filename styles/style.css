@@ -12,8 +12,9 @@ body {
 	  font-style: normal;
 	  width: 600px;
 	  margin: 0 auto;
+    margin-top: 50px;
 	  background-color: #FDAA46;
-	  padding: 0 20px 20px 20px;
+	  padding: 20px 20px 20px 20px;
 	  border: 5px solid black;
 }
 

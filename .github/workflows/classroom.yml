@@ -25,11 +25,22 @@ jobs:
         command: |
             REPO="${{ github.repository }}"
             REPO="${REPO##*/}"
+<<<<<<< HEAD
             STUDENT="${REPO##*-}"
             COUNT=$(git log main --author="$STUDENT" --pretty=oneline | wc -l | tr -d ' ')
             echo "Student: $STUDENT"
             echo "Commit count on main: $COUNT"
             [ "$COUNT" -ge 5 ]
+=======
+
+            # 1. Strip assignment prefix
+            STUDENT="${REPO#mozilla-website-}"
+
+            # 2. Strip trailing -<digits> if present
+            STUDENT="$(echo "$STUDENT" | sed -E 's/-[0-9]+$//')"
+
+            echo "Student: $STUDENT"
+>>>>>>> ba8040b138934725f788b0efd9be0fa96affb84a
         timeout: 2
         max-score: 10
     - name: Autograding Reporter
